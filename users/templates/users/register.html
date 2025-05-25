@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | MediTurno</title>
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">💊 MediTurno</div>
+        <div class="menu-icon">☰</div>
+    </header>
+
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="User" required>
+            <input type="password" name="password1" placeholder="Password" required>
+            <input type="password" name="password2" placeholder="Confirm pass" required>
+            <input type="email" name="email" placeholder="E-mail" required>
+
+            <div class="button-row">
+                <a href="{% url 'login' %}" class="btn">Log in</a>
+                <button type="submit" class="btn">Sign in</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
