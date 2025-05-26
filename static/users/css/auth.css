@@ -1,0 +1,75 @@
+/* General styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container styles */
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Headings */
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Input fields */
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #357AE8;
+}
+
+/* Error messages */
+ul {
+    list-style: none;
+    padding: 0;
+    color: #e74c3c;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+    }
+}
