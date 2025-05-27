@@ -1,0 +1,20 @@
+header {
+    height: 60px; /* Ajusta según necesites */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #0099cc, #0077aa);
+    color: white;
+    padding: 10px 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.logo img {
+    max-height: 150px; /* Ajusta según necesites */
+}
+
+.menu-icon {
+    font-size: 26px;
+    cursor: pointer;
+}
