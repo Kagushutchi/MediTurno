@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from .forms import LoginForm, CustomUserCreationForm
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 
 def login_view(request):
@@ -16,14 +18,11 @@ def login_view(request):
         )
         if user:
             login(request, user)
-            return redirect('dashboard')  # Replace with role-based or generic route
+            return redirect('users:home')  # Replace with role-based or generic route
 
         form.add_error(None, "Invalid username or password")
 
-    if request.headers.get('Hx-Request'):
-        return render(request, 'users/templates/users/partials/_login_form.html', {'form': form})
-
-    return render(request, 'users/templates/users/login.html', {'form': form})
+    return render(request, 'users/login.html', {'form': form})
 
 
 def register_view(request):
@@ -32,19 +31,12 @@ def register_view(request):
         if form.is_valid():
             user = form.save()  # Se guarda con rol 'user'
             login(request, user)  # Iniciar sesión después del registro
-            return redirect("home")  # Redirigir a la página principal
+            return redirect("users:login")  # Redirigir a la página principal
     else:
         form = CustomUserCreationForm()
 
     return render(request, "users/register.html", {"form": form})
-"""
-def register_view(request):
-    if request.method == "POST": 
-        form = UserCreationForm(request.POST) 
-        if form.is_valid(): 
-            form.save() 
-            return redirect("posts:list")
-    else:
-        form = UserCreationForm()
-    return render(request, "users/register.html", { "form": form })
-"""
+
+@login_required(login_url='/users/login/')
+def home_view(request):
+    return render(request, 'users/home.html')

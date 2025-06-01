@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mediturno - Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/home.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src="{% static 'js/menu.js' %}" defer></script>
+</head>
+<body>
+    {% include "includes/header.html" %}
+    <main class="home-buttons">
+        <button>Recordatorio rapido</button>
+        <button>Pedidos de turno</button>
+        <button>Calendario</button>
+    </main>
+
+</body>
+</html>

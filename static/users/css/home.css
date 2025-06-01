@@ -1,0 +1,23 @@
+.home-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 50px 20px;
+    margin-top: 35%;
+}
+
+.home-buttons button {
+    background: linear-gradient(to right, #00b4ff, #004e73);
+    color: black;
+    border: none;
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    margin-top: 20px;
+}
+
+.home-buttons button:hover {
+    opacity: 0.9;
+}

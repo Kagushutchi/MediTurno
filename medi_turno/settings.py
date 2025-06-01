@@ -55,7 +55,7 @@ ROOT_URLCONF = 'medi_turno.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR],
+        'DIRS': [BASE_DIR / "templates", BASE_DIR / "users/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,7 +69,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'medi_turno.wsgi.application'
-
+LOGIN_URL = '/users/login/'  # Default redirect for non-logged users
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

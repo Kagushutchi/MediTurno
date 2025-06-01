@@ -1,8 +1,0 @@
-<form method="post" hx-post="{% url 'users:login' %}" hx-target="#login-form" hx-swap="outerHTML">
-    {% csrf_token %}
-    {{ form.as_p }}
-    {% if form.non_field_errors %}
-        {% include 'users/templates/users/partials/_form_errors.html' with errors=form.non_field_errors %}
-    {% endif %}
-    <button type="submit">Login</button>
-</form>

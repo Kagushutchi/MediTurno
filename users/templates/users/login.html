@@ -1,8 +1,28 @@
 {%extends "users/base_auth.html" %}
 
 {% block content %}
-<h2>Login</h2>
-<div id="login-form" hx-get="{% url 'users:login' %}" hx-trigger="load" hx-target="#login-form" hx-swap="outerHTML">
-    <!-- initial load will auto-fetch partial -->
-</div>
+<h2>Iniciar Sesion</h2>
+   <form class="form-with-validation" action="{% url 'users:login' %}" method="post" class="auth-form">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            <span class="error-message">
+                {{ field.errors }}
+            </span>
+        </div>
+    {% endfor %}
+    
+    {% if form.non_field_errors %}
+        <div class="form-errors">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+    <div class="btn-group">
+        <button class="form-submit">Iniciar Sesion</button>
+        <a href="{% url 'users:register' %}" class="secondary-btn">Registrarse</a>
+    </div>
+</form> <!-- initial load will auto-fetch partial -->
+
 {% endblock %}

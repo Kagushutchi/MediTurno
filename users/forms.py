@@ -8,9 +8,12 @@ class LoginForm(forms.Form):
 
 
 class CustomUserCreationForm(UserCreationForm):
+    fecha_nacimiento = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'})  # Usa el selector nativo del navegador
+    )
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password1', 'password2']  # No incluimos 'role'
+        fields = ['username', 'nombre', 'apellido', 'dni', 'fecha_nacimiento', 'email', 'password1', 'password2']  # No incluimos 'role'
 
     def save(self, commit=True):
         user = super().save(commit=False)
