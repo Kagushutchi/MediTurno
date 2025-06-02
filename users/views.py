@@ -40,3 +40,7 @@ def register_view(request):
 @login_required(login_url='/users/login/')
 def home_view(request):
     return render(request, 'users/home.html')
+
+@login_required(login_url='/users/login/')
+def map_view(request):
+    return render(request, 'users/map.html')
