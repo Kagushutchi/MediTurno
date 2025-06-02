@@ -7,78 +7,119 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Contenedor principal del formulario */
 .container {
-  width: 100%;
+  width: 90%;
   max-width: 350px;
   padding: 40px 20px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Contenedor de autenticación */
-.auth-container {
-  padding: 0 10px;
-}
-
-/* Título centrado */
-h2 {
+/* Títulos centrados (para login y register) */
+h2, h1 {
   color: #333;
   font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
 }
 
+/* Agrupación de cada campo en login (si se usa form-group) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
+/* Etiquetas descriptivas: colocadas encima del input y centradas */
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+  text-align: center;
+  width: 100%;
+}
 
-/* Formulario */
-form { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 20px; width: 100%; 
-    max-width: 300px; }
+/* Para los formularios que usan form.as_p (como en register) */
+/* Se quitan los márgenes predeterminados y se fuerza el ancho completo */
+form p {
+  margin: 0 0 15px;
+  width: 100%;
+}
 
-input { 
-    padding: 12px; 
-    border-radius: 20px; 
-    border: 2px solid #0077aa; 
-    text-align: center; 
-    font-size: 16px; 
-    color: #444; }
-/* Inputs del formulario */
+/* Formulario genérico (login y register) */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Estilos base para los inputs */
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #0077aa;
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Inputs en el formulario de autenticación si usás la clase auth-form */
 .auth-form input[type="text"],
 .auth-form input[type="password"],
-.auth-form input[type="email"] {
+.auth-form input[type="email"],
+.auth-form input[type="date"] {
   padding: 12px;
   border: 2px solid #0077b6;
   border-radius: 20px;
-  text-align: center;
   font-size: 16px;
   color: #444;
+  text-align: center;
   outline: none;
   transition: border 0.2s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .auth-form input[type="text"]:focus,
 .auth-form input[type="password"]:focus,
-.auth-form input[type="email"]:focus {
+.auth-form input[type="email"]:focus,
+.auth-form input[type="date"]:focus {
   border-color: #005f8a;
 }
 
-/* Grupo de botones */
+/* Mensajes de error para inputs */
+.error-message {
+  color: #d93025;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+/* Botones y grupo de botones */
 .btn-group {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
   margin-top: 20px;
 }
 
-/* Estilo para botones y enlaces de botón */
-button, 
-.secondary-btn {
+button,
+.secondary-btn,
+.form-submit {
   padding: 10px 20px;
   border: 2px solid #0077b6;
   border-radius: 20px;
@@ -86,32 +127,32 @@ button,
   background-color: #fff;
   color: #000;
   text-decoration: none;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-button:hover, 
-.secondary-btn:hover {
+button:hover,
+.secondary-btn:hover,
+.form-submit:hover {
   background-color: #0077b6;
   color: #fff;
 }
 
-/* Si necesitas agrupar botones en fila */
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-/* Diseño Responsive */
+/* Diseño Responsive para dispositivos móviles */
 @media (max-width: 480px) {
   .container {
-    width: 100%;
+    width: 90%;
     padding: 20px;
   }
-.auth-container {
-  width: 100%;
-}
-
-  
+  input {
+    font-size: 14px;
+    padding: 8px;
+  }
+  button,
+  .secondary-btn,
+  .form-submit {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
 }
