@@ -3,7 +3,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
-  background-color: #f4f7fc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +14,6 @@ body {
   width: 100%;
   max-width: 350px;
   padding: 40px 20px;
-  background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -27,7 +25,6 @@ body {
 
 /* Título centrado */
 h2 {
-  color: #333;
   font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
@@ -47,8 +44,8 @@ input {
     border-radius: 20px; 
     border: 2px solid #0077aa; 
     text-align: center; 
-    font-size: 16px; 
-    color: #444; }
+    font-size: 16px;
+  }
 /* Inputs del formulario */
 .auth-form input[type="text"],
 .auth-form input[type="password"],
@@ -58,7 +55,6 @@ input {
   border-radius: 20px;
   text-align: center;
   font-size: 16px;
-  color: #444;
   outline: none;
   transition: border 0.2s ease-in-out;
 }
@@ -83,8 +79,6 @@ button,
   border: 2px solid #0077b6;
   border-radius: 20px;
   font-size: 14px;
-  background-color: #fff;
-  color: #000;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;

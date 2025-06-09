@@ -7,8 +7,6 @@
 }
 
 .home-buttons button {
-    background: linear-gradient(to right, #00b4ff, #004e73);
-    color: black;
     border: none;
     padding: 20px;
     border-radius: 15px;
