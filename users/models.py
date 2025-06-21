@@ -96,12 +96,14 @@ class CustomUser(AbstractUser):
                 message="El DNI debe contener exactamente 8 dígitos numéricos",
                 code='invalid_dni'
             )
-        ]
+        ],
+        blank=True,
+        null=True
     )
 
     email = models.EmailField(unique=True)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50,blank=True,null=True)
+    apellido = models.CharField(max_length=50, blank=True, null=True)
     fecha_nacimiento = models.DateField(validators=[validate_birth_date], blank=True, null=True)
 
     telefono = models.CharField(
@@ -154,8 +156,6 @@ class Especialidad(models.Model):
         return self.nombre   
 class MedicoProfile(models.Model):
     user = models.OneToOneField('CustomUser', on_delete=models.CASCADE, related_name='medico_profile')
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
 
     especialidades = models.ManyToManyField('Especialidad', related_name='medicos')
 

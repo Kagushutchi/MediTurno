@@ -15,18 +15,10 @@
     <form method="get">
         <input type="text" name="q" placeholder="Buscar por nombre..." value="{{ request.GET.q|default:'' }}">
 
-        <select name="obra_social">
-            <option value="" {% if not request.GET.obra_social %}selected{% endif %}>Obra Social</option>
-            <option value="osde" {% if request.GET.obra_social == "osde" %}selected{% endif %}>OSDE</option>
-            <option value="swiss_medical" {% if request.GET.obra_social == "swiss_medical" %}selected{% endif %}>Swiss Medical</option>
-            <option value="pami" {% if request.GET.obra_social == "pami" %}selected{% endif %}>PAMI</option>
-            <option value="ioma" {% if request.GET.obra_social == "ioma" %}selected{% endif %}>IOMA</option>
-        </select>
-
         <select name="clinica">
             <option value="" {% if not request.GET.clinica %}selected{% endif %}>Clínica</option>
             {% for clinica in clinicas %}
-                <option value="{{ clinica.clinica_profile.nombre_comercial }}" {% if request.GET.clinica == clinica.clinica_profile.nombre_comercial %}selected{% endif %}>
+                <option value="{{ clinica.user.nombre_comercial }}" {% if request.GET.clinica == clinica.user.nombre_comercial %}selected{% endif %}>
                     {{ clinica.clinica_profile.nombre_comercial }}
                 </option>
             {% empty %}
@@ -62,18 +54,25 @@
             <div class="medico-card">
                 <div class="info">
                     <p><strong>{{ medico.user.nombre }} {{ medico.user.apellido }}</strong></p>
-                    <p>Especialidad: {{ medico.especialidad.nombre }}</p>
+                   <p>Especialidad:
+                    {% for especialidad in medico.especialidades.all %}
+                        {{ especialidad }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        No tiene especialidades asignadas.
+                    {% endfor %}
+                    </p>
+                    
                     <p>Ciudad: {{ medico.user.ciudad }}</p>
-                    <p>Obra Social: {{ medico.user.obra_social }}</p>
+                    
                     {% if medico.clinica %}
                         <p>Clínica: {{ medico.clinica.clinica_profile.nombre_comercial }}</p>
                     {% endif %}
                 </div>
-                {# Si en el futuro agregás un campo para foto al perfil del médico, podés mostrarlo
+                
                 {% if medico.foto %}
                     <img src="{{ medico.foto.url }}" alt="Foto de {{ medico.user.nombre }}">
                 {% endif %}
-                #}
+          
             </div>
         {% empty %}
             <p>No se encontraron médicos con los criterios de búsqueda.</p>

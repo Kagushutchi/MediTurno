@@ -1,16 +1,16 @@
 <header class="main-header">
     <div class="logo">
         {%load static%}
-        <img src= "{% static 'img/mediturno_logo.png' %}" alt="Mediturno" class="logo-img"> 
+        <img href="{% url 'users:home' %}" src= "{% static 'img/mediturno_logo.png' %}" alt="Mediturno" class="logo-img"> 
     </div>
     <button class="hamburger" onclick="toggleMenu()">☰</button>
 
     <nav id="mobileMenu" class="mobile-menu hidden">
         <button class="close-button" onclick="toggleMenu()">✕</button>
         <ul>
-            <li><a href="#">Inicio</a></li>
+            <li><a href="{% url 'users:home' %}">Inicio</a></li>
             <li><a href="#">Recordatorios</a></li>
-            <li><a href="#">Turnos</a></li>
+            <li><a href="{% url 'appointments:buscar_medicos' %}">Turnos</a></li>
             <li><a href="#">Calendario</a></li>
             <li><a href="#">Soporte</a></li>
             <li><a href="#">Configuración</a></li>

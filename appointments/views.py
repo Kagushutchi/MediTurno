@@ -6,7 +6,7 @@ from users.models import CustomUser, Especialidad, MedicoProfile
 
 def buscar_medicos(request):
     query = request.GET.get('q', '')
-    obra_social = request.GET.get('obra_social', '')
+    
     clinica_name = request.GET.get('clinica', '')
     especialidad = request.GET.get('especialidad', '')
     localidad = request.GET.get('localidad', '')
@@ -18,8 +18,6 @@ def buscar_medicos(request):
         medicos = medicos.filter(
             Q(user__nombre__icontains=query) | Q(user__apellido__icontains=query)
         )
-    if obra_social:
-        medicos = medicos.filter(user__obra_social=obra_social)
     if clinica_name:
         # Se filtra a partir del nombre comercial que se encuentra en el ClinicaProfile vinculado
         medicos = medicos.filter(clinica__clinica_profile__nombre_comercial=clinica_name)
