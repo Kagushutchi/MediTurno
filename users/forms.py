@@ -32,10 +32,20 @@ class CustomUserCreationForm(UserCreationForm):
         # Sobreescribir los labels de password1 y password2
         self.fields['password1'].label = 'Contraseña'
         self.fields['password2'].label = 'Confirmar Contraseña'
-        
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.role = 'user'  # Asignamos automáticamente el rol "User"
+    
+    # Asignar automáticamente rol 'user' si no se definió
+        if not user.role:
+            user.role = 'user'
+
+    # Si es una clínica, limpiar nombre y apellido
+        if user.role == 'clinic':
+            user.nombre = ''
+            user.apellido = ''
+
         if commit:
             user.save()
         return user
+
+

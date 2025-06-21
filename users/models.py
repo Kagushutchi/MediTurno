@@ -2,12 +2,50 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator, ValidationError
 from django.utils.timezone import now
+from django.contrib.auth.models import BaseUserManager
+
+class DiaDeAtencion(models.Model):
+    DIA_CHOICES = [
+        ('LU', 'Lunes'),
+        ('MA', 'Martes'),
+        ('MI', 'Miércoles'),
+        ('JU', 'Jueves'),
+        ('VI', 'Viernes'),
+        ('SA', 'Sábado'),
+        ('DO', 'Domingo'),
+    ]
+    codigo = models.CharField(max_length=2, choices=DIA_CHOICES, unique=True)
+
+    def __str__(self):  # <--- pequeño fix acá también
+        return dict(self.DIA_CHOICES)[self.codigo]
+
 
 def validate_birth_date(value):
     if value > now().date():
         raise ValidationError("La fecha de nacimiento no puede estar en el futuro.")
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+
+        return self.create_user(email, password, **extra_fields)
 class CustomUser(AbstractUser):
+    objects = CustomUserManager()
+    
     USER_TYPES = (
         ('user', 'User'),
         ('medic', 'Medic'),
@@ -52,7 +90,6 @@ class CustomUser(AbstractUser):
 
     dni = models.CharField(
         max_length=8,
-        unique=True,
         validators=[
             RegexValidator(
                 regex=r'^\d{8}$',
@@ -65,7 +102,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
-    fecha_nacimiento = models.DateField(validators=[validate_birth_date])
+    fecha_nacimiento = models.DateField(validators=[validate_birth_date], blank=True, null=True)
 
     telefono = models.CharField(
         max_length=15,
@@ -109,3 +146,43 @@ class CustomUser(AbstractUser):
 
     def is_admin(self):
         return self.is_superuser
+    
+class Especialidad(models.Model):
+    nombre = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.nombre   
+class MedicoProfile(models.Model):
+    user = models.OneToOneField('CustomUser', on_delete=models.CASCADE, related_name='medico_profile')
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+
+    especialidades = models.ManyToManyField('Especialidad', related_name='medicos')
+
+    clinica = models.ForeignKey(
+        'CustomUser',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'role': 'clinic'},
+        related_name='medicos_en_clinica'
+    )
+    matricula = models.CharField(max_length=30, unique=True)
+    dias_que_atiende =  models.ManyToManyField(DiaDeAtencion, blank=True)
+    hora_inicio = models.TimeField(null=True, blank=True)
+    hora_fin = models.TimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Dr. {self.user.nombre} {self.user.apellido} - {', '.join([e.nombre for e in self.especialidades.all()])}"
+
+class ClinicaProfile(models.Model):
+    user = models.OneToOneField('CustomUser', on_delete=models.CASCADE, related_name='clinica_profile')
+ 
+    nombre_comercial = models.CharField(max_length=100)
+    razon_social = models.CharField(max_length=150, blank=True, null=True)
+    horario_atencion = models.CharField(max_length=100, blank=True, null=True)
+    
+ 
+    def __str__(self):
+        return self.nombre_comercial
+    
