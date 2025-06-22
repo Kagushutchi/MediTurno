@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator, ValidationError
 from django.utils.timezone import now
 from django.contrib.auth.models import BaseUserManager
 
+#dias
 class DiaDeAtencion(models.Model):
     DIA_CHOICES = [
         ('LU', 'Lunes'),
@@ -16,13 +17,15 @@ class DiaDeAtencion(models.Model):
     ]
     codigo = models.CharField(max_length=2, choices=DIA_CHOICES, unique=True)
 
-    def __str__(self):  # <--- pequeño fix acá también
+    def __str__(self):
         return dict(self.DIA_CHOICES)[self.codigo]
 
 
 def validate_birth_date(value):
     if value > now().date():
         raise ValidationError("La fecha de nacimiento no puede estar en el futuro.")
+
+#Esta clase es para poder crear el super admin si necesidad de agregar todos los campos
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -43,6 +46,8 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
+
+#Aca esta el usuario base
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
     
@@ -90,15 +95,15 @@ class CustomUser(AbstractUser):
 
     dni = models.CharField(
         max_length=8,
+        null=True,
+        blank=True,
         validators=[
             RegexValidator(
                 regex=r'^\d{8}$',
                 message="El DNI debe contener exactamente 8 dígitos numéricos",
                 code='invalid_dni'
             )
-        ],
-        blank=True,
-        null=True
+        ]
     )
 
     email = models.EmailField(unique=True)
@@ -153,12 +158,11 @@ class Especialidad(models.Model):
     nombre = models.CharField(max_length=100)
     
     def __str__(self):
-        return self.nombre   
+        return self.nombre
+
 class MedicoProfile(models.Model):
     user = models.OneToOneField('CustomUser', on_delete=models.CASCADE, related_name='medico_profile')
-
     especialidades = models.ManyToManyField('Especialidad', related_name='medicos')
-
     clinica = models.ForeignKey(
         'CustomUser',
         on_delete=models.SET_NULL,
@@ -167,22 +171,52 @@ class MedicoProfile(models.Model):
         limit_choices_to={'role': 'clinic'},
         related_name='medicos_en_clinica'
     )
-    matricula = models.CharField(max_length=30, unique=True)
-    dias_que_atiende =  models.ManyToManyField(DiaDeAtencion, blank=True)
-    hora_inicio = models.TimeField(null=True, blank=True)
-    hora_fin = models.TimeField(null=True, blank=True)
+    matricula = models.CharField(max_length=30)
 
     def __str__(self):
         return f"Dr. {self.user.nombre} {self.user.apellido} - {', '.join([e.nombre for e in self.especialidades.all()])}"
-
+"""
+    def clean(self):
+        # Si ya existe, validamos que tenga al menos un horario
+        if self.pk and not self.horarios.exists():
+            raise ValidationError("El medico debe tener al menos un horario cargado.")
+"""
 class ClinicaProfile(models.Model):
     user = models.OneToOneField('CustomUser', on_delete=models.CASCADE, related_name='clinica_profile')
- 
     nombre_comercial = models.CharField(max_length=100)
     razon_social = models.CharField(max_length=150, blank=True, null=True)
-    horario_atencion = models.CharField(max_length=100, blank=True, null=True)
-    
- 
+
     def __str__(self):
         return self.nombre_comercial
-    
+"""
+    def clean(self):
+        # Si ya existe, validamos que tenga al menos un horario
+        if self.pk and not self.horarios.exists():
+            raise ValidationError("La clínica debe tener al menos un horario cargado.")
+"""
+#Es para hacer los horarios de las clinicas y que puedan ser asimetricos ej: de LU a VI un horario y los SA otro:
+
+class HorarioClinica(models.Model):
+    clinica = models.ForeignKey('ClinicaProfile', on_delete=models.CASCADE, related_name='horarios')
+    dia = models.CharField(max_length=2, choices=DiaDeAtencion.DIA_CHOICES)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+
+    class Meta:
+        unique_together = ('clinica', 'dia')
+
+    def __str__(self):
+        return f"{self.get_dia_display()}: {self.hora_inicio} - {self.hora_fin}"
+
+class HorarioMedico(models.Model):
+    medico = models.ForeignKey('MedicoProfile', on_delete=models.CASCADE, related_name='horarios')
+    dia = models.CharField(max_length=2, choices=DiaDeAtencion.DIA_CHOICES)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+
+    class Meta:
+        unique_together = ('medico', 'dia')
+
+    def __str__(self):
+        return f"{self.get_dia_display()}: {self.hora_inicio} - {self.hora_fin}"
+

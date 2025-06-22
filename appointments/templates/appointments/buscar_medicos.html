@@ -18,7 +18,7 @@
         <select name="clinica">
             <option value="" {% if not request.GET.clinica %}selected{% endif %}>Clínica</option>
             {% for clinica in clinicas %}
-                <option value="{{ clinica.user.nombre_comercial }}" {% if request.GET.clinica == clinica.user.nombre_comercial %}selected{% endif %}>
+                <option value="{{ clinica.clinica_profile.nombre_comercial }}" {% if request.GET.clinica == clinica.user.nombre_comercial %}selected{% endif %}>
                     {{ clinica.clinica_profile.nombre_comercial }}
                 </option>
             {% empty %}
