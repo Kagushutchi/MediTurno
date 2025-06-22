@@ -15,7 +15,7 @@
 <body>
     {% include "includes/header.html" %}
     <main class="home-buttons">
-        <button>Recordatorio rapido</button>
+        <button onclick="location.href='{% url 'notifications:lista_notificaciones' %}'">Recordatorio rápido</button>
         <button onclick="location.href='{% url 'appointments:buscar_medicos' %}'">Pedidos de turno</button>
         <button>Calendario</button>
     </main>
