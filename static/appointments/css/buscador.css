@@ -66,6 +66,16 @@ form button:hover {
     font-size: 1.05rem;
 }
 
+.medico-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.medico-card-link:hover .medico-card {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
 @media (max-width: 600px) {
     form {
         flex-direction: column;

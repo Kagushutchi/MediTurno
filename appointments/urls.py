@@ -7,4 +7,5 @@ app_name = 'appointments'
 urlpatterns = [
     path('buscar/', views.buscar_medicos, name='buscar_medicos'),
     # Puedes agregar otras rutas relacionadas a turnos o citas aquí
-]
+    path('medico/<int:medico_id>/horarios/', views.obtener_horarios_medico, name='obtener_horarios_medico'),
+    ]

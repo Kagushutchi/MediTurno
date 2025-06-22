@@ -1,0 +1,17 @@
+<div class="horarios-container">
+    <h2>Disponibilidad de {{ medico.user.nombre }} {{ medico.user.apellido }}</h2>
+    <button onclick="volverALista()">← Volver a lista de médicos</button>
+
+    {% if disponibilidad %}
+        {% for dia, horas in disponibilidad.items %}
+            <h3>{{ dia|date:"l d/m" }}</h3>
+            <ul>
+                {% for hora in horas %}
+                    <li>{{ hora|time:"H:i" }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>No hay horarios disponibles.</p>
+    {% endif %}
+</div>
