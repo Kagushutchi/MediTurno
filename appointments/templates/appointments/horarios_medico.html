@@ -1,0 +1,36 @@
+<div class="horarios-container">
+    <h2 class="titulo-horario">Horario</h2>
+    <div class="info-horario">
+        {{ medico.horarios.first.hora_inicio|time:"H:i" }} a {{ medico.horarios.first.hora_fin|time:"H:i" }}<br>
+        {% for h in medico.horarios.all %}
+            {{ h.get_dia_display }}{% if not forloop.last %} y {% endif %}
+        {% endfor %}
+    </div>
+
+    <form method="post" action="{% url 'appointments:crear_turno' %}" class="form-turno">
+        {% csrf_token %}
+        <input type="hidden" name="medico_id" value="{{ medico.id }}">
+
+        <select name="fecha" class="select-custom" required>
+            <option value="">Día disponible</option>
+            {% for dia, horas in disponibilidad.items %}
+                <option value="{{ dia|date:'Y-m-d' }}">{{ dia|date:"l d/m" }}</option>
+            {% endfor %}
+        </select>
+
+<!-- Hora (formato HH:MM:SS) -->
+        <select name="hora" class="select-custom" required>
+            <option value="">Horario</option>
+            {% for dia, horas in disponibilidad.items %}
+                {% for hora in horas %}
+                    <option value="{{ hora|time:'H:i:s' }}">{{ hora|time:"H:i" }}</option>
+                {% endfor %}
+                 
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-turno">Pedir Turno</button>
+    </form>
+
+    <button onclick="volverALista()" class="volver-btn">← Volver</button>
+</div>

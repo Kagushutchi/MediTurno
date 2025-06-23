@@ -74,11 +74,68 @@ form button:hover {
     font-size: 1.05rem;
 }
 
-/* Estilo para la imagen, manteniendo los bordes redondeados */
-.medico-card img {
-    border-radius: 12px;
-    width: 100%;
-    height: auto;
+.medico-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.medico-card-link:hover .medico-card {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.horarios-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f0f4f8;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.titulo-horario {
+  font-size: 1.6rem;
+  color: #000;
+  margin-bottom: 1rem;
+}
+.select-custom {
+  width: 100%;
+  margin: 0.7rem 0;
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  appearance: none;
+}
+.btn-turno {
+  display: block;
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 0.85rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0075c9;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.btn-turno:disabled {
+  background: #a0a5ab;
+  cursor: default;
+}
+.btn-turno:not(:disabled):hover {
+  background-color: #005fa3;
+}
+.volver-btn {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #0075c9;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 

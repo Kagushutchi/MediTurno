@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Turno Confirmado</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'appointments/css/turnos.css' %}">
+</head>
+<body>
+    {% include "includes/header.html" %}
+    <div class="horarios-container">
+        <h2 class="titulo-horario">✅ ¡Turno registrado con éxito!</h2>
+        <p>Recibirás notificaciones si el turno se confirma o cambia.</p>
+        <a href="{% url 'appointments:buscar_medicos' %}">
+            <button class="btn-turno">Volver a buscar médicos</button>
+        </a>
+    </div>
+</body>
+</html>

@@ -9,9 +9,25 @@
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
     <script src="{% static 'js/menu.js' %}" defer></script>
 </head>
+<script>
+function mostrarHorarios(medicoId) {
+    fetch(`/appointments/medico/${medicoId}/horarios/`)
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.medicos-lista').style.display = 'none';
+            document.querySelector('#horarios').innerHTML = data.html;
+            document.querySelector('#horarios').style.display = 'block';
+        });
+}
+
+function volverALista() {
+    document.querySelector('#horarios').style.display = 'none';
+    document.querySelector('.medicos-lista').style.display = 'block';
+}
+</script>
+
 <body>
     {% include "includes/header.html" %}
-
     <form method="get">
         <input type="text" name="q" placeholder="Buscar por nombre..." value="{{ request.GET.q|default:'' }}">
 
@@ -49,10 +65,11 @@
         <button type="submit">Buscar</button>
     </form>
 
+    
     <div class="medicos-lista">
         {% for medico in medicos %}
-            <div class="medico-card">
-                <div class="info">
+                <div class="medico-card" onclick="mostrarHorarios({{ medico.id }})">
+                    <div class="info">
                     <p><strong>{{ medico.user.nombre }} {{ medico.user.apellido }}</strong></p>
                    <p>Especialidad:
                     {% for especialidad in medico.especialidades.all %}
@@ -67,17 +84,21 @@
                     {% if medico.clinica %}
                         <p>Clínica: {{ medico.clinica.clinica_profile.nombre_comercial }}</p>
                     {% endif %}
-                </div>
+                    </div>
                 
                 {% if medico.foto %}
                     <img src="{{ medico.foto.url }}" alt="Foto de {{ medico.user.nombre }}">
                 {% endif %}
           
-            </div>
+                </div>
         {% empty %}
             <p>No se encontraron médicos con los criterios de búsqueda.</p>
         {% endfor %}
     </div>
+
+    
+    <div id="horarios" style="display: none;"></div>
+    
 </body>
 </html>
 
