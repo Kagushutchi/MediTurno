@@ -1,0 +1,156 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form input[type="text"],
+form select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-width: 150px;
+    font-size: 0.95rem;
+}
+
+form button {
+    padding: 0.6rem 1rem;
+    border: none;
+    background-color: #2f80ed;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #1e60c7;
+}
+
+.medicos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.medico-card {
+    background-color: #fff; /* Fondo blanco para la tarjeta */
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Sección de información: fondo azul y texto blanco */
+.medico-card .info {
+    background: linear-gradient(135deg, #00AAFF, #006699);
+    padding: 1rem;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.medico-card .info p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+}
+
+.medico-card strong {
+    font-size: 1.05rem;
+}
+
+.medico-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.medico-card-link:hover .medico-card {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.horarios-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f0f4f8;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.titulo-horario {
+  font-size: 1.6rem;
+  color: #000;
+  margin-bottom: 1rem;
+}
+.select-custom {
+  width: 100%;
+  margin: 0.7rem 0;
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  appearance: none;
+}
+.btn-turno {
+  display: block;
+  width: 100%;
+  margin-top: 1.2rem;
+  padding: 0.85rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #00AAFF, #006699);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.btn-turno:disabled {
+  background: #a0a5ab;
+  cursor: default;
+}
+.btn-turno:not(:disabled):hover {
+  background-color: #005fa3;
+}
+.volver-btn {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #ffffff; /* texto blanco */
+  background: linear-gradient(135deg, #00AAFF, #006699); /* azul característico */
+  border: none;
+  border-radius: 6px; /* bordes redondeados */
+  padding: 10px 20px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* profundidad */
+  transition: background-color 0.3s ease;
+}
+
+.volver-btn:hover {
+  background-color: #005fa3; /* efecto hover más oscuro */
+}
+
+
+
+@media (max-width: 600px) {
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

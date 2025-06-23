@@ -17,10 +17,14 @@ Including another URLconf
 # mediturno/urls.py
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('appointments/', include('appointments.urls')),
+    path('notificaciones/', include('notifications.urls', namespace='notifications')),
+    path('', lambda request: redirect('users:home')),
 ]
 
 

@@ -1,0 +1,66 @@
+<div class="horarios-container">
+    <h2 class="titulo-horario">Horario</h2>
+    <div class="info-horario">
+        {{ medico.horarios.first.hora_inicio|time:"H:i" }} a {{ medico.horarios.first.hora_fin|time:"H:i" }}<br>
+        {% for h in medico.horarios.all %}
+            {{ h.get_dia_display }}{% if not forloop.last %} y {% endif %}
+        {% endfor %}
+    </div>
+
+    <form method="post" action="{% url 'appointments:crear_turno' %}" class="form-turno">
+        {% csrf_token %}
+        <input type="hidden" name="medico_id" value="{{ medico.id }}">
+
+        <select name="fecha" class="select-custom" required>
+            <option value="">Día disponible</option>
+            {% for dia, horas in disponibilidad.items %}
+            <option value="{{ dia }}">{{ dia }}</option>
+            {% endfor %}
+
+        </select>
+        <!--
+                <p>Fechas cargadas:</p>
+                <ul>
+                    {% for dia, horas in disponibilidad.items %}
+                    <li>{{ dia }} ({{ horas|length }} horarios)</li>
+                    {% empty %}
+                    <li>No hay fechas cargadas.</li>
+                    {% endfor %}
+                </ul> -->
+<!-- Hora (formato HH:MM:SS) -->
+
+        <select name="hora" class="select-custom" id="horario-select" required>
+            <option value="">Horario</option>
+        </select>
+        {{ disponibilidad|json_script:"disponibilidad-json" }}
+        <script>
+            // Después de insertar el HTML:
+            document.querySelector('select[name="fecha"]').addEventListener('change', function () {
+                // misma lógica que antes
+            });
+
+            const disponibilidad = JSON.parse(document.getElementById('disponibilidad-json').textContent);
+            const fechaSelect = document.querySelector('select[name="fecha"]');
+            const horaSelect = document.getElementById('horario-select');
+
+            fechaSelect.addEventListener('change', () => {
+                const fecha = fechaSelect.value;
+                horaSelect.innerHTML = '<option value="">Horario</option>';
+
+                if (disponibilidad[fecha]) {
+                    disponibilidad[fecha].forEach(hora => {
+                        const option = document.createElement('option');
+                        option.value = hora;
+                        option.textContent = hora.slice(0, 5);
+                        horaSelect.appendChild(option);
+                    });
+                }
+            });
+        </script>
+
+        <button type="submit" class="btn-turno">Pedir Turno</button>
+    </form>
+
+    <button onclick="volverALista()" class="volver-btn"> Volver</button>
+</div>
+

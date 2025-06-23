@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import logout
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -36,6 +36,14 @@ def register_view(request):
         form = CustomUserCreationForm()
 
     return render(request, "users/register.html", {"form": form})
+
+
+# en users/views.py
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('users:login')
 
 @login_required(login_url='/users/login/')
 def home_view(request):
