@@ -19,7 +19,7 @@
             Recordatorios de turnos
         </div>
 
-        {% if recordatorios %}
+        {% if turnos %}
             {% for turno in turnos %}
                 <div class="turno-box">
                     <p><strong>Fecha:</strong> {{ turno.fecha_inicio|date:"d/m/Y" }}</p>

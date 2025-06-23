@@ -60,7 +60,9 @@ def obtener_horarios_medico(request, medico_id):
     )
 
     # Horarios ocupados como datetime
-    horas_ocupadas = set(localtime(t.fecha_inicio).replace(second=0, microsecond=0) for t in turnos_tomados)
+    horas_ocupadas = set(
+    localtime(t.fecha_inicio).replace(second=0, microsecond=0).strftime('%Y-%m-%d %H:%M')
+    for t in turnos_tomados)
 
     # Mapeo de código de día del sistema (MO, TU...) al formato del modelo (LU, MA...)
     DIAS_MAPA = {
@@ -93,24 +95,25 @@ def obtener_horarios_medico(request, medico_id):
             fin = datetime.combine(dia.date(), horario.hora_fin)
 
             while hora_actual < fin:
-                if hora_actual not in horas_ocupadas:
+                hora_actual_str = hora_actual.strftime('%Y-%m-%d %H:%M')
+                if hora_actual_str not in horas_ocupadas:
                     horarios_disponibles.append(hora_actual.time())
                 hora_actual += timedelta(minutes=30)
 
-        # ⛔ Si no tiene horarios disponibles ese día, NO lo agregamos
         if horarios_disponibles:
             disponibilidad[dia.date()] = horarios_disponibles
 
+
+    disponibilidad_str = {
+    fecha.strftime('%Y-%m-%d'): horas
+    for fecha, horas in disponibilidad.items()}
+    
     html = render_to_string('appointments/horarios_medico.html', {
         'medico': medico,
-        'disponibilidad': dict(disponibilidad),
+        'disponibilidad': disponibilidad_str,
     }, request=request)
 
     return JsonResponse({'html': html})
-
-
-
-
 
 @login_required
 def crear_turno(request):

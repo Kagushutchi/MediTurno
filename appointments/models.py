@@ -24,6 +24,8 @@ class Appointment(models.Model):
     )
     clinica = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
         on_delete=models.CASCADE,
         related_name='turnos_clinica',
         limit_choices_to={'role': 'clinic'}

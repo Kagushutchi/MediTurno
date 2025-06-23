@@ -10,21 +10,41 @@
     <script src="{% static 'js/menu.js' %}" defer></script>
 </head>
 <script>
-function mostrarHorarios(medicoId) {
-    fetch(`/appointments/medico/${medicoId}/horarios/`)
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector('.medicos-lista').style.display = 'none';
-            document.querySelector('#horarios').innerHTML = data.html;
-            document.querySelector('#horarios').style.display = 'block';
-        });
-}
+    function mostrarHorarios(medicoId) {
+        fetch(`/appointments/medico/${medicoId}/horarios/`)
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.medicos-lista').style.display = 'none';
+                const horariosContainer = document.querySelector('#horarios');
+                horariosContainer.innerHTML = data.html;
+                horariosContainer.style.display = 'block';
 
-function volverALista() {
-    document.querySelector('#horarios').style.display = 'none';
-    document.querySelector('.medicos-lista').style.display = 'block';
-}
+                // 💥 Reenganchar el script que estaba dentro del HTML cargado
+                const disponibilidadScript = document.getElementById('disponibilidad-json');
+                if (!disponibilidadScript) return;
+
+                const disponibilidad = JSON.parse(disponibilidadScript.textContent);
+                const fechaSelect = document.querySelector('select[name="fecha"]');
+                const horaSelect = document.getElementById('horario-select');
+
+                if (fechaSelect && horaSelect) {
+                    fechaSelect.addEventListener('change', () => {
+                        const fecha = fechaSelect.value;
+                        horaSelect.innerHTML = '<option value="">Horario</option>';
+                        if (disponibilidad[fecha]) {
+                            disponibilidad[fecha].forEach(hora => {
+                                const option = document.createElement('option');
+                                option.value = hora;
+                                option.textContent = hora.slice(0, 5);
+                                horaSelect.appendChild(option);
+                            });
+                        }
+                    });
+                }
+            });
+    }
 </script>
+
 
 <body>
     {% include "includes/header.html" %}
