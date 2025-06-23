@@ -1,6 +1,6 @@
 venv/
 medi_turno/__pycache__/
-db.sqlite3/
+db.sqlite3
 users/__pycache__/
 appointments/__pycache__/
 users/migrations/

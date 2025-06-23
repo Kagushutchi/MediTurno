@@ -116,7 +116,7 @@ form button:hover {
   font-size: 1.1rem;
   font-weight: bold;
   color: #fff;
-  background-color: #0075c9;
+  background: linear-gradient(135deg, #00AAFF, #006699);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -131,12 +131,21 @@ form button:hover {
 .volver-btn {
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: #0075c9;
-  background: transparent;
+  color: #ffffff; /* texto blanco */
+  background: linear-gradient(135deg, #00AAFF, #006699); /* azul característico */
   border: none;
-  text-decoration: underline;
+  border-radius: 6px; /* bordes redondeados */
+  padding: 10px 20px;
+  text-decoration: none;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* profundidad */
+  transition: background-color 0.3s ease;
 }
+
+.volver-btn:hover {
+  background-color: #005fa3; /* efecto hover más oscuro */
+}
+
 
 
 @media (max-width: 600px) {

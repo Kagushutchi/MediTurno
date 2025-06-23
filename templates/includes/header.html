@@ -1,8 +1,11 @@
 <header class="main-header">
-    <div class="logo">
-        {%load static%}
-        <img href="{% url 'users:home' %}" src= "{% static 'img/mediturno_logo.png' %}" alt="Mediturno" class="logo-img"> 
-    </div>
+<div class="logo">
+    {% load static %}
+    <a href="{% url 'users:home' %}">
+        <img src="{% static 'img/mediturno_logo.png' %}" alt="Mediturno" class="logo-img">
+    </a>
+</div>
+
     <button class="hamburger" onclick="toggleMenu()">☰</button>
 
     <nav id="mobileMenu" class="mobile-menu hidden">
@@ -14,6 +17,8 @@
             <li><a href="#">Calendario</a></li>
             <li><a href="#">Soporte</a></li>
             <li><a href="#">Configuración</a></li>
+            <li><a href="{% url 'users:logout' %}">Cerrar sesión</a></li>
+
         </ul>
     </nav>
 </header>
