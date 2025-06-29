@@ -5,3 +5,5 @@ users/__pycache__/
 appointments/__pycache__/
 users/migrations/
 appointments/migrations/
+clinic_admin/__pycache__/
+clinic_admin/migrations/
