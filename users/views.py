@@ -16,11 +16,15 @@ def login_view(request):
             username=form.cleaned_data['username'],
             password=form.cleaned_data['password']
         )
-        if user:
-            login(request, user)
-            return redirect('users:home')  # Replace with role-based or generic route
+        if user is not None:
+            login(request, user)  # 👈 Esto es lo que faltaba
+            if user.role in ['clinic', 'medic']:
+                return redirect('clinic_admin:home_admin')
+            else:
+                return redirect('users:home')
+        else:
+            form.add_error(None, "Nombre de usuario o contraseña incorrectos")
 
-        form.add_error(None, "Invalid username or password")
 
     return render(request, 'users/login.html', {'form': form})
 

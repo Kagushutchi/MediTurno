@@ -25,6 +25,7 @@ urlpatterns = [
     path('appointments/', include('appointments.urls')),
     path('notificaciones/', include('notifications.urls', namespace='notifications')),
     path('', lambda request: redirect('users:home')),
+    path('clinic_admin/', include('clinic_admin.urls')),
 ]
 
 

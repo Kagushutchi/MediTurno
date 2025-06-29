@@ -1,0 +1,24 @@
+<header class="main-header">
+<div class="logo">
+    {% load static %}
+    <a href="{% url 'clinic_admin:home_admin' %}">
+        <img src="{% static 'img/mediturno_logo.png' %}" alt="Mediturno" class="logo-img">
+    </a>
+</div>
+
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+    <nav id="mobileMenu" class="mobile-menu hidden">
+        <button class="close-button" onclick="toggleMenu()">✕</button>
+        <ul>
+            <li><a href="{% url 'clinic_admin:home_admin' %}">Inicio</a></li>
+            <li><a href="#">Medicos</a></li>
+            <li><a href="#">Pacientes</a></li>
+            <li><a href="#">Agenda</a></li>
+            <li><a href="#">Soporte</a></li>
+            <li><a href="#">Configuración</a></li>
+            <li><a href="{% url 'users:logout' %}">Cerrar sesión</a></li>
+
+        </ul>
+    </nav>
+</header>
