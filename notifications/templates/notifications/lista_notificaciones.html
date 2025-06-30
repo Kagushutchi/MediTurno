@@ -1,16 +1,18 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Notificaciones de Turnos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'notifications/css/notificaciones.css' %}">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
-    <script src="{% static 'js/menu.js' %}" defer></script> 
+    <script src="{% static 'js/menu.js' %}" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
     {% include "includes/header.html" %}
 
@@ -20,21 +22,26 @@
         </div>
 
         {% if turnos %}
-            {% for turno in turnos %}
-                <div class="turno-box">
-                    <p><strong>Fecha:</strong> {{ turno.fecha_inicio|date:"d/m/Y" }}</p>
-                    <p><strong>Hora:</strong> {{ turno.fecha_inicio|time:"H:i" }}</p>
-                    <p><strong>Médico:</strong> {{ turno.medico.nombre }} {{ turno.medico.apellido }}</p>
-                    <p><strong>Clínica:</strong> {{ turno.clinica.clinica_profile.nombre_comercial }}</p>
-                    {% if turno.motivo %}
-                        <p><strong>Motivo:</strong> {{ turno.motivo }}</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+        {% for turno in turnos %}
+        <div class="turno-box">
+            <p><strong>Fecha:</strong> {{ turno.fecha_inicio|date:"d/m/Y" }}</p>
+            <p><strong>Hora:</strong> {{ turno.fecha_inicio|time:"H:i" }}</p>
+            <p><strong>Médico:</strong> {{ turno.medico.nombre }} {{ turno.medico.apellido }}</p>
+            <p><strong>Clínica:</strong> {{ turno.clinica.clinica_profile.nombre_comercial }}</p>
+            {% if turno.clinica and turno.clinica.direccion %}
+            <a href="{% url 'users:map' turno.clinica.id %}">Ver en mapa</a>
+            {% else %}
+            <span>Sin dirección de mapa</span>
+            {% endif %}
+            {% if turno.motivo %}
+            <p><strong>Motivo:</strong> {{ turno.motivo }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
         {% else %}
-            <p class="sin-turnos">No tenés turnos agendados.</p>
+        <p class="sin-turnos">No tenés turnos agendados.</p>
         {% endif %}
     </main>
 </body>
-</html>
 
+</html>

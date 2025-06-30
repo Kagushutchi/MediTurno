@@ -133,16 +133,9 @@ class CustomUser(AbstractUser):
     )
 
     direccion = models.CharField(
-        max_length=255,
+        max_length=2048,
         blank=True,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex=r'^[A-Za-z0-9\s.,#-]+$',
-                message="La dirección solo puede contener letras, números, espacios y caracteres especiales básicos.",
-                code='invalid_direccion'
-            )
-        ]
+        null=True
     )
 
     def is_medic(self):

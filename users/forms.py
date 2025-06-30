@@ -53,7 +53,7 @@ class CustomUserUpdateForm(forms.ModelForm):
         model = CustomUser
         fields = [
             'nombre', 'apellido', 'email', 'dni', 'fecha_nacimiento', 'telefono',
-            'obra_social', 'numero_afiliado', 'ciudad', 'direccion'
+            'obra_social', 'numero_afiliado', 'ciudad'
         ]
         widgets = {
             'fecha_nacimiento': forms.DateInput(attrs={'type': 'date'}),
