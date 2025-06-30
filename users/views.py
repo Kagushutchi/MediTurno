@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, CustomUserCreationForm
+from .forms import LoginForm, CustomUserCreationForm, CustomUserUpdateForm
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm 
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from .models import CustomUser
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -52,3 +53,20 @@ def logout_view(request):
 @login_required(login_url='/users/login/')
 def home_view(request):
     return render(request, 'users/home.html')
+
+@login_required(login_url='/users/login/')
+def map_view(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    return render(request, 'users/map.html', {'direccion': user.direccion})
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    if request.method == 'POST':
+        form = CustomUserUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("users:home")
+    else:
+        form = CustomUserUpdateForm(instance=user)
+    return render(request, 'users/edit_profile.html', {'form': form})
