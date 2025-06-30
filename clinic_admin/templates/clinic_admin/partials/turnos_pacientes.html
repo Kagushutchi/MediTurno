@@ -1,0 +1,27 @@
+<h3>Turnos del paciente {{ paciente.nombre }} {{ paciente.apellido }}</h3>
+
+{% if turnos %}
+    <div class="horarios-container">
+        <form class="form-turno">
+            <select id="turno-select" class="select-custom" onchange="activarBoton(this)">
+                <option value="">Seleccioná un turno</option>
+                {% for turno in turnos %}
+                    {% if turno.estado != 'cancelado' %}
+                        <option value="{{ turno.id }}">
+                            {{ turno.fecha_inicio|date:"d/m/Y H:i" }} - {{ turno.get_estado_display }}
+                        </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+
+            <button type="button" id="cancelar-btn" class="btn-turno" onclick="cancelarTurno()" disabled>
+                Cancelar Turno
+            </button>
+        </form>
+
+        <button onclick="volverALista()" class="volver-btn">Volver</button>
+    </div>
+{% else %}
+    <p>Este paciente no tiene turnos activos.</p>
+    <button onclick="volverALista()" class="volver-btn">Volver</button>
+{% endif %}

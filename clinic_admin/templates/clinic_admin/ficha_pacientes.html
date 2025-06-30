@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pacientes</title>
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'appointments/css/buscador.css' %}">
+    <script src="{% static 'js/menu.js' %}" defer></script>
+</head>
+<body>
+    {% include "includes/header_admin.html" %}
+
+    <form method="get" style="margin-bottom: 1rem;">
+        <input type="text" name="q" placeholder="Buscar paciente..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <div class="pacientes-lista" id="pacientes-lista">
+        {% for paciente in pacientes %}
+            <div class="paciente-card" onclick="mostrarTurnosPaciente({{ paciente.id }})">
+                <strong>{{ paciente.nombre }} {{ paciente.apellido }}</strong>
+            </div>
+        {% empty %}
+            <p>No hay pacientes con turnos registrados en esta clínica.</p>
+        {% endfor %}
+    </div>
+
+    <div id="turnos-container" style="display: none;"></div>
+
+    <script>
+        function mostrarTurnosPaciente(pacienteId) {
+                fetch(`/clinic_admin/home/turnos_pacientes/${pacienteId}/`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('pacientes-lista').style.display = 'none';
+                    const container = document.getElementById('turnos-container');
+                    container.innerHTML = html;
+                    container.style.display = 'block';
+                });
+        }
+
+        function volverALista() {
+            document.getElementById('turnos-container').style.display = 'none';
+            document.getElementById('pacientes-lista').style.display = 'block';
+        }
+
+        function activarBoton(selectElement) {
+            const boton = document.getElementById("cancelar-btn");
+            boton.disabled = !selectElement.value;
+            boton.setAttribute("data-turno-id", selectElement.value);
+        }
+
+        function cancelarTurno() {
+            const turnoId = document.getElementById("cancelar-btn").getAttribute("data-turno-id");
+
+            fetch(`/clinic_admin/home/cancelar_turno/${turnoId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert("Turno cancelado correctamente");
+                    volverALista();
+                    location.reload();
+                } else {
+                    alert("Error al cancelar turno");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
