@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Mediturno - Sugerir Turno</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="{% static 'users/css/suggest_turno.css' %}">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -17,26 +17,29 @@
 
 <body>
     {% include "includes/header.html" %}
-    <h2>Sugerencias de próximos turnos</h2>
-    {% for item in suggestions %}
-    <div class="medic-suggestion">
-        <h3>{{ item.medic.nombre }} {{ item.medic.apellido }}</h3>
-        <ul>
-            {% for turno in item.turns %}
-            <li>{{ turno.fecha_inicio|date:"d/m/Y" }}</li>
-            {% endfor %}
-        </ul>
-        {% if item.suggested_date %}
-        <p><a href="{% url 'appointments:buscar_medicos' %}">
-                Sugerencia: <strong>{{ item.suggested_date|date:"d/m/Y" }}</strong>
-            </a></p>
-        {% else %}
-        <p>No hay suficientes turnos previos para sugerir una fecha.</p>
-        {% endif %}
+    
+    <div class="contenido-sugerencias">
+        <h2>Sugerencias de próximos turnos</h2>
+
+        {% for item in suggestions %}
+        <div class="medic-suggestion">
+            <h3>{{ item.medic.nombre }} {{ item.medic.apellido }}</h3>   
+
+            {% if item.suggested_date %}
+            <p class="sugerencia">
+                <a href="{% url 'appointments:buscar_medicos' %}">
+                    Sugerencia: <strong>{{ item.suggested_date|date:"d/m/Y" }}</strong>
+                </a>
+            </p>
+            {% else %}
+            <p class="sugerencia vacia">No hay suficientes turnos previos para sugerir una fecha.</p>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="sugerencia vacia">No hay turnos previos.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>No hay médicos con turnos previos.</p>
-    {% endfor %}
 </body>
+
 
 </html>

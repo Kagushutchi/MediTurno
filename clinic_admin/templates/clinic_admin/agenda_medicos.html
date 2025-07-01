@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Mediturno - Agenda</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="{% static 'clinic_admin/css/agenda.css' %}">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
@@ -17,29 +17,35 @@
 
 <body>
     {% include "includes/header_admin.html" %}
-    <h2>Médicos de la clínica y sus turnos</h2>
-    {% for item in medicos_con_turnos %}
-    <div class="medico-card">
-        <h3>{{ item.medico.user.nombre }} {{ item.medico.user.apellido }}</h3>
-        <ul>
-            {% for turno in item.turnos %}
-            <li>
-                {{ turno.fecha_inicio|date:"d/m/Y H:i" }} - Paciente:
-                {% if turno.paciente %}
-                {{ turno.paciente.nombre }} {{ turno.paciente.apellido }}
-                {% else %}
-                (Sin paciente)
-                {% endif %}
-                - Estado: {{ turno.get_estado_display }}
-            </li>
-            {% empty %}
-            <li>No hay turnos para este médico.</li>
-            {% endfor %}
-        </ul>
+    
+    <div class="contenido-turnos">
+        
+        {% for item in medicos_con_turnos %}
+        <div class="medico-card">
+            <h3>{{ item.medico.user.nombre }} {{ item.medico.user.apellido }}</h3>
+            <ul>
+                {% for turno in item.turnos %}
+                    {% if turno.estado != 'cancelado' %}
+                    <li>
+                        {{ turno.fecha_inicio|date:"d/m/Y H:i" }} - Paciente:
+                        {% if turno.paciente %}
+                        {{ turno.paciente.nombre }} {{ turno.paciente.apellido }}
+                        {% else %}
+                            (Sin paciente)
+                        {% endif %}
+                        - Estado: {{ turno.get_estado_display }}
+                    </li>
+                    {% endif %}
+                {% empty %}
+                <li>No hay turnos para este médico.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% empty %}
+        <p>No hay médicos asociados a esta clínica.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>No hay médicos asociados a esta clínica.</p>
-    {% endfor %}
 </body>
+
 
 </html>
