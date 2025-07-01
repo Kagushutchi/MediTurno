@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import CustomUser
+from appointments.models import Appointment
+from datetime import timedelta
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -59,7 +61,7 @@ def map_view(request, user_id):
     user = get_object_or_404(CustomUser, pk=user_id)
     return render(request, 'users/map.html', {'direccion': user.direccion})
 
-@login_required
+@login_required(login_url='/users/login/')
 def edit_profile(request):
     user = request.user
     if request.method == 'POST':
@@ -70,3 +72,35 @@ def edit_profile(request):
     else:
         form = CustomUserUpdateForm(instance=user)
     return render(request, 'users/edit_profile.html', {'form': form})
+
+@login_required(login_url='/users/login/')
+def suggest_turno_view(request):
+    user = request.user
+    medic_ids = Appointment.objects.filter(paciente=user).values_list('medico_id', flat=True)
+    unique_medic_ids = set(medic_ids)  # This ensures each medic is only processed once
+    suggestions = []
+
+    for medic_id in unique_medic_ids:
+        medic = CustomUser.objects.get(id=medic_id)
+        turns = Appointment.objects.filter(paciente=user, medico_id=medic_id).order_by('-fecha_inicio')[:3]
+        turns = list(turns)
+        suggested_date = None
+
+        if len(turns) >= 2:
+            intervals = [
+                (turns[i].fecha_inicio - turns[i+1].fecha_inicio).days
+                for i in range(len(turns)-1)
+            ]
+            avg_interval = sum(intervals) // len(intervals)
+            suggested_date = turns[0].fecha_inicio + timedelta(days=avg_interval)
+
+        suggestions.append({
+            'medic': medic,
+            'turns': turns,
+            'suggested_date': suggested_date,
+        })
+
+    return render(request, 'users/suggest_turno.html', {
+        'suggestions': suggestions,
+    })
+

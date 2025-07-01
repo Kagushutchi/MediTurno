@@ -8,7 +8,7 @@
 
 .home-buttons button {
     background: linear-gradient(to right, #00b4ff, #004e73);
-    color: black;
+    color: var(--text-color);
     border: none;
     padding: 20px;
     border-radius: 15px;
@@ -16,6 +16,11 @@
     cursor: pointer;
     transition: opacity 0.3s;
     margin-top: 20px;
+    text-shadow:
+        var(--text-shadow-color) 1px 1px 0,
+        var(--text-shadow-color) -1px 1px 0,
+        var(--text-shadow-color) 1px -1px 0,
+        var(--text-shadow-color) -1px -1px 0;
 }
 
 .home-buttons button:hover {

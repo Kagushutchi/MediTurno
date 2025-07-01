@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from appointments.models import Appointment
-from users.models import CustomUser
+from users.models import CustomUser, MedicoProfile
 from django.db.models import Q
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -66,4 +66,21 @@ def cancelar_turno(request, turno_id):
         turno.save()
         return JsonResponse({'success': True})
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+@login_required
+def medicos_y_turnos_view(request):
+    clinic_user = request.user
+    
+    medicos = MedicoProfile.objects.filter(clinica=clinic_user)
+
+    medicos_con_turnos = []
+    for medico in medicos:
+        turnos = Appointment.objects.filter(medico=medico.user)
+        medicos_con_turnos.append({
+            'medico': medico,
+            'turnos': turnos,
+        })
+    return render(request, 'clinic_admin/agenda_medicos.html', {
+        'medicos_con_turnos': medicos_con_turnos,
+    })
 
