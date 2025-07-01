@@ -39,6 +39,53 @@ form button {
 form button:hover {
     background-color: #1e60c7;
 }
+/* Contenedor de las tarjetas de pacientes */
+.pacientes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/* Tarjeta de paciente */
+.paciente-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, #00aaff, #0077cc);
+    color: black;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.paciente-card:hover {
+    transform: scale(1.02);
+}
+
+/* Nombre del paciente */
+.paciente-card p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Ícono de usuario (puede ser un <img> o un <div>) */
+.paciente-card::after {
+    content: "👤";
+    font-size: 2rem;
+}
+
+/* Estilo para centrar un h3 */
+.centrado {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 
 .medicos-lista {
     display: grid;
