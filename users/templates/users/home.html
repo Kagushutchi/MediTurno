@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
     <script src="{% static 'js/menu.js' %}" defer></script>
+    <script src="{% static 'js/darkmode.js' %}"></script>
 </head>
 
 <body>
@@ -19,9 +20,8 @@
     <main class="home-buttons">
         <button onclick="location.href='{% url 'notifications:lista_notificaciones' %}'">Recordatorio rápido</button>
         <button onclick="location.href='{% url 'appointments:buscar_medicos' %}'">Pedidos de turno</button>
-        <button>Calendario</button>
+        <button onclick="location.href='{% url 'users:suggest_turno' %}'">Calendario</button>
     </main>
-    <script src="{% static 'js/darkmode.js' %}"></script>
 </body>
 
 </html>

@@ -1,9 +1,10 @@
 :root {
   --background-color: white;
   --text-color: black;
+  --text-shadow-color: #e0e0e0;
   --header-gradient: linear-gradient(to right, #00bfff, #005577);
   --menu-gradient: linear-gradient(to right, #005577, #00bfff);
-  --mobile-menu-gradient: linear-gradient(to left, #00b4ff, #004e73);
+  --mobile-menu-gradient: linear-gradient(to left, #00bfff, #004e73);
   --button-color: #005577;
   --shadow-color: rgba(0, 0, 0, 0.2);
 }
@@ -11,6 +12,7 @@
 body.dark-mode {
   --background-color: #121212;
   --text-color: #e0e0e0;
+  --text-shadow-color: #005577;
   --header-gradient: linear-gradient(to right, #1f1f1f, #333333);
   --menu-gradient: linear-gradient(to right, #333333, #1f1f1f);
   --mobile-menu-gradient: linear-gradient(to left, #1f1f1f, #333333);
@@ -39,8 +41,10 @@ body {
 }
 
 .logo-img {
-  height: 100px; /* Ajusta este valor según el tamaño deseado */
-  width: auto;  /* Mantiene la proporción original de la imagen */
+  height: 100px;
+  /* Ajusta este valor según el tamaño deseado */
+  width: auto;
+  /* Mantiene la proporción original de la imagen */
 }
 
 .hamburger {
@@ -131,6 +135,12 @@ body {
 
 .mobile-menu li {
   margin: 30px 0;
+  font-weight: bold;
+  text-shadow:
+    var(--text-shadow-color) 1px 1px 0,
+    var(--text-shadow-color) -1px 1px 0,
+    var(--text-shadow-color) 1px -1px 0,
+    var(--text-shadow-color) -1px -1px 0;
 }
 
 .mobile-menu a {
