@@ -7,8 +7,20 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
+from users.forms import LoginForm, CustomUserCreationForm, CustomUserUpdateForm
 
 
+@login_required
+def edit_profile_admin(request):
+    user = request.user
+    if request.method == 'POST':
+        form = CustomUserUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("clinic_admin:home_admin")
+    else:
+        form = CustomUserUpdateForm(instance=user)
+    return render(request, 'clinic_admin/edit_profile_admin.html', {'form': form})
 
 @login_required
 def home_admin(request):
