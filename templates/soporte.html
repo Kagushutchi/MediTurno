@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Soporte</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <script src="{% static 'js/menu.js' %}" defer></script>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+</head>
+<body>
+    {% include "includes/header.html" %}
+    <main class="soporte-container" style="max-width: 500px; margin: 2rem auto; padding: 2rem; background: var(--background-color, #fff); border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <h1>Soporte</h1>
+        <p>¿Necesitás ayuda? Contactanos:</p>
+        <ul style="list-style: none; padding: 0;">
+            <li><strong>Teléfono fijo:</strong> <span id="telefono-fijo">(011) 1234-5678</span></li>
+            <li><strong>Celular / WhatsApp:</strong> <span id="whatsapp">+54 9 11 2345-6789</span></li>
+        </ul>
+        <p>También podés escribirnos a <a href="mailto:soporte@mediturno.com">soporte@mediturno.com</a></p>
+    </main>
+</body>
+</html>

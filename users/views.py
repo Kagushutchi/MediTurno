@@ -104,3 +104,9 @@ def suggest_turno_view(request):
         'suggestions': suggestions,
     })
 
+
+@login_required(login_url='/users/login/')
+def soporte_view(request):
+    if request.user.role in ['clinic', 'medic']:
+        return render(request, 'soporte_admin.html')
+    return render(request, 'soporte.html')

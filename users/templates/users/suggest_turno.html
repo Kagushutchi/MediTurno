@@ -21,11 +21,6 @@
     {% for item in suggestions %}
     <div class="medic-suggestion">
         <h3>{{ item.medic.nombre }} {{ item.medic.apellido }}</h3>
-        <ul>
-            {% for turno in item.turns %}
-            <li>{{ turno.fecha_inicio|date:"d/m/Y" }}</li>
-            {% endfor %}
-        </ul>
         {% if item.suggested_date %}
         <p><a href="{% url 'appointments:buscar_medicos' %}">
                 Sugerencia: <strong>{{ item.suggested_date|date:"d/m/Y" }}</strong>

@@ -15,11 +15,10 @@
             <li><a href="#">Medicos</a></li>
             <li><a href="#">Pacientes</a></li>
             <li><a href="{% url 'clinic_admin:agenda_medicos' %}">Agenda</a></li>
-            <li><a href="#">Soporte</a></li>
-            <li><a href="#">Configuración</a></li>
+            <li><a href="{% url 'users:soporte' %}">Soporte</a></li>
+            <li><a href="{% url 'users:edit_profile' %}">Configuración</a></li>
             <li><a href="#" id="toggle-dark-mode" onclick="toggleDarkMode(); return false;">Modo oscuro</a></li>
             <li><a href="{% url 'users:logout' %}">Cerrar sesión</a></li>
-
         </ul>
     </nav>
 </header>
