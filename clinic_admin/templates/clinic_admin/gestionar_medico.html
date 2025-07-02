@@ -92,6 +92,48 @@ function editarHorarios(medicoId) {
 }
 </script>
 
+<script>
+document.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'agregar-horario') {
+        const diasChoices = [
+            {% for codigo, nombre in dias_choices %}
+                ["{{ codigo }}", "{{ nombre }}"],
+            {% endfor %}
+        ];
+
+        const container = document.getElementById('horarios-container');
+        const selects = container.querySelectorAll('.dia-select');
+        const diasUsados = Array.from(selects).map(s => s.value);
+
+        if (diasUsados.length >= 7) {
+            alert("Ya agregaste 7 días. No se puede más.");
+            return;
+        }
+
+        const diaLibre = diasChoices.find(([codigo]) => !diasUsados.includes(codigo));
+        if (!diaLibre) {
+            alert("No hay días disponibles.");
+            return;
+        }
+
+        const div = document.createElement('div');
+        div.classList.add('horario-item');
+        div.innerHTML = `
+            <select name="dia[]" class="dia-select">
+                ${diasChoices.map(([codigo, nombre]) =>
+                    `<option value="${codigo}" ${codigo === diaLibre[0] ? 'selected' : ''}>${nombre}</option>`
+                ).join('')}
+            </select>
+            <input type="time" name="hora_inicio[]" required>
+            <input type="time" name="hora_fin[]" required>
+            <button type="button" onclick="this.parentElement.remove()">❌</button>
+        `;
+        container.appendChild(div);
+    }
+});
+</script>
+
+
 </body>
 </html>
 

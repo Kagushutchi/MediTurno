@@ -1,42 +1,65 @@
 <h3>Editar horarios para {{ medico.user.nombre }} {{ medico.user.apellido }}</h3>
 
-<form id="horarios-form" method="post">
+<form method="post" action="{% url 'clinic_admin:guardar_horarios_medico' medico.id %}">
     {% csrf_token %}
-    <div id="horarios-lista">
+
+    <div id="horarios-container">
         {% for horario in horarios %}
-            <div class="horario-item">
-                <select name="dia[]">
-                    {% for codigo, nombre in dias %}
-                        <option value="{{ codigo }}" {% if horario.dia == codigo %}selected{% endif %}>{{ nombre }}</option>
-                    {% endfor %}
-                </select>
-                <input type="time" name="hora_inicio[]" value="{{ horario.hora_inicio|time:'H:i' }}">
-                <input type="time" name="hora_fin[]" value="{{ horario.hora_fin|time:'H:i' }}">
-                <button type="button" onclick="this.parentElement.remove()">❌</button>
-            </div>
+        <div class="horario-item">
+            <select name="dia[]" class="dia-select">
+                {% for codigo, nombre in dias_choices %}
+                <option value="{{ codigo }}" {% if horario.dia == codigo %}selected{% endif %}>{{ nombre }}</option>
+                {% endfor %}
+            </select>
+            <input type="time" name="hora_inicio[]" value="{{ horario.hora_inicio|time:'H:i' }}" required>
+            <input type="time" name="hora_fin[]" value="{{ horario.hora_fin|time:'H:i' }}" required>
+            <button type="button" onclick="this.parentElement.remove()">❌</button>
+        </div>
         {% endfor %}
     </div>
-    <button type="button" onclick="agregarHorario()">Agregar horario</button>
+
+    <button type="button" id="agregar-horario">Agregar horario</button>
     <button type="submit">Guardar cambios</button>
 </form>
 
 
 <script>
-function agregarHorario() {
-    const horariosContainer = document.getElementById('horarios-lista');
-    const nuevo = document.createElement('div');
-    nuevo.classList.add('horario-item');
-    nuevo.innerHTML = `
-        <select name="dia[]">
-            {% for codigo, nombre in dias %}
-                <option value="{{ codigo }}">{{ nombre }}</option>
-            {% endfor %}
-        </select>
-        <input type="time" name="hora_inicio[]" required>
-        <input type="time" name="hora_fin[]" required>
-        <button type="button" onclick="this.parentElement.remove()">❌</button>
-    `;
-    horariosContainer.appendChild(nuevo);
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const diasChoices = {{ dias_choices|safe }};
+    const container = document.getElementById('horarios-container');
+    const btnAgregar = document.getElementById('agregar-horario');
+
+    btnAgregar.addEventListener('click', () => {
+        const diasSeleccionados = Array.from(document.querySelectorAll('.dia-select'))
+            .map(select => select.value);
+
+        // Evita agregar si ya hay 7
+        if (diasSeleccionados.length >= 7) {
+            alert("Ya se han asignado 7 días. No se pueden agregar más.");
+            return;
+        }
+
+        // Encuentra el primer día libre
+        const diaDisponible = diasChoices.find(dc => !diasSeleccionados.includes(dc[0]));
+        if (!diaDisponible) {
+            alert("No hay días disponibles para agregar.");
+            return;
+        }
+
+        const div = document.createElement('div');
+        div.classList.add('horario-item');
+        div.innerHTML = `
+            <select name="dia[]" class="dia-select">
+                ${diasChoices.map(([codigo, nombre]) => 
+                    `<option value="${codigo}" ${codigo === diaDisponible[0] ? 'selected' : ''}>${nombre}</option>`
+                ).join('')}
+            </select>
+            <input type="time" name="hora_inicio[]" required>
+            <input type="time" name="hora_fin[]" required>
+            <button type="button" onclick="this.parentElement.remove()">❌</button>
+        `;
+        container.appendChild(div);
+    });
+});
 </script>
 

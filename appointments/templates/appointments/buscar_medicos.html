@@ -76,9 +76,9 @@
 
         <select name="localidad">
             <option value="" {% if not request.GET.localidad %}selected{% endif %}>Localidad</option>
-            <option value="madariaga" {% if request.GET.localidad == "madariaga" %}selected{% endif %}>Madariaga</option>
-            <option value="pinamar" {% if request.GET.localidad == "pinamar" %}selected{% endif %}>Pinamar</option>
-            <option value="villa_gesell" {% if request.GET.localidad == "villa_gesell" %}selected{% endif %}>
+            <option value="madariaga" {% if request.GET.localidad == "Madariaga" %}selected{% endif %}>Madariaga</option>
+            <option value="pinamar" {% if request.GET.localidad == "Pinamar" %}selected{% endif %}>Pinamar</option>
+            <option value="villa_gesell" {% if request.GET.localidad == "Villa Gesell" %}selected{% endif %}>
                 Villa Gesell
             </option>
         </select>
@@ -100,7 +100,7 @@
                     {% endfor %}
                     </p>
                     
-                    <p>Ciudad: {{ medico.user.ciudad }}</p>
+                    <p> Ciudad: {{ medico.user.get_ciudad_display }}</p>
                     
                     {% if medico.clinica %}
                         <p>Clínica: {{ medico.clinica.clinica_profile.nombre_comercial }}</p>

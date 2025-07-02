@@ -17,8 +17,17 @@ from users.models import DiaDeAtencion
 
 @login_required
 def editar_horarios_medico(request, medico_id):
+    DIAS_CHOICES = [
+    ('LU', 'Lunes'),
+    ('MA', 'Martes'),
+    ('MI', 'Miércoles'),
+    ('JU', 'Jueves'),
+    ('VI', 'Viernes'),
+    ('SA', 'Sábado'),
+    ('DO', 'Domingo'),
+    ]
     medico = get_object_or_404(MedicoProfile, id=medico_id)
-
+    
     # corregido
     if request.user != medico.clinica:
         return HttpResponseBadRequest("No autorizado")
@@ -30,7 +39,7 @@ def editar_horarios_medico(request, medico_id):
     html = render_to_string("clinic_admin/editar_horarios_medico.html", {
         "medico": medico,
         "horarios": horarios,
-        "dias": dias
+        'dias_choices': DIAS_CHOICES,
     }, request=request)
 
     return JsonResponse({'html': html})
@@ -38,31 +47,35 @@ def editar_horarios_medico(request, medico_id):
 
 @login_required
 def guardar_horarios_medico(request, medico_id):
+    if request.method != "POST":
+        return HttpResponseBadRequest("Método no permitido")
+
+    print("POST DATA:", request.POST)
+
     medico = get_object_or_404(MedicoProfile, id=medico_id)
     if request.user != medico.clinica:
-        return HttpResponseBadRequest("No autorizado")
+        return HttpResponseForbidden("No autorizado")
 
-    if request.method == "POST":
-        dias = request.POST.getlist("dia[]")
-        horas_inicio = request.POST.getlist("hora_inicio[]")
-        horas_fin = request.POST.getlist("hora_fin[]")
+    dias = request.POST.getlist('dia[]')
+    horas_inicio = request.POST.getlist('hora_inicio[]')
+    horas_fin = request.POST.getlist('hora_fin[]')
 
-        # Borramos todos los horarios actuales
-        HorarioMedico.objects.filter(medico=medico).delete()
+    print("DIAS:", dias)
+    print("HORAS INICIO:", horas_inicio)
+    print("HORAS FIN:", horas_fin)
 
-        # Creamos los nuevos
-        for d, hi, hf in zip(dias, horas_inicio, horas_fin):
-            if hi and hf:
-                HorarioMedico.objects.create(
-                    medico=medico,
-                    dia=d,
-                    hora_inicio=hi,
-                    hora_fin=hf
-                )
+    HorarioMedico.objects.filter(medico=medico).delete()
 
-        return JsonResponse({"success": True})
+    for dia, h_inicio, h_fin in zip(dias, horas_inicio, horas_fin):
+        HorarioMedico.objects.create(
+            medico=medico,
+            dia=dia,
+            hora_inicio=h_inicio,
+            hora_fin=h_fin
+        )
 
-    return JsonResponse({"success": False, "error": "Método no permitido"})
+    return redirect('clinic_admin:gestionar_medicos')
+
 
 
 @login_required
@@ -73,7 +86,8 @@ def gestionar_medicos(request):
     medicos = MedicoProfile.objects.filter(clinica=request.user)
 
     return render(request, "clinic_admin/gestionar_medico.html", {
-        "medicos": medicos
+        "medicos": medicos,
+        "dias_choices": DiaDeAtencion.DIA_CHOICES
     })
 
 @login_required
@@ -161,4 +175,3 @@ def medicos_y_turnos_view(request):
     return render(request, 'clinic_admin/agenda_medicos.html', {
         'medicos_con_turnos': medicos_con_turnos,
     })
-
