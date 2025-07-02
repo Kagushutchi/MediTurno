@@ -1,0 +1,142 @@
+/* === Estilos para la sección de Gestión de Médicos === */
+
+h1, h3 {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem auto;
+    flex-wrap: wrap;
+}
+
+input[type="text"] {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.medicos-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.medico-card {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1rem;
+    background: linear-gradient(to bottom, #00aaff, #0077cc);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.medico-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.medico-card .info p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+}
+
+.medico-card button {
+    margin-top: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.medico-card button:hover {
+    background-color: #1e7e34;
+}
+
+#horarios-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 12px;
+    background: linear-gradient(to bottom, #00aaff, #0077cc);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.horario-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.dia-select, input[type="time"] {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+button#agregar-horario, #horarios-container button[type="submit"] {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, #00aaff, #0077cc);
+    color: white;
+    margin: 1rem 0.5rem 0;
+    cursor: pointer;
+}
+
+#horarios-container button[type="submit"] {
+    background-color: #28a745;
+}
+
+button#agregar-horario:hover {
+    background-color: #0056b3;
+}
+
+#horarios-container button[type="submit"]:hover {
+    background-color: #1e7e34;
+}
+
+/* Para alinear los botones horizontalmente */
+.botones-horario button {
+    flex: 1; /* Ocupan el mismo espacio */
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(to bottom, #00aaff, #0077cc);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    max-width: 200px; /* Opcional: limita el tamaño si se agrandan mucho */
+    min-width: 120px; /* Opcional: asegura cierto tamaño mínimo */
+}
+
+.botones-horario button:hover {
+    background-color: #0077aa;
+}
+

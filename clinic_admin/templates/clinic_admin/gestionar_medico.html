@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Buscar Médicos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'appointments/css/buscador.css' %}">
+    <link rel="stylesheet" href="{% static 'clinic_admin/css/buscador_medico.css' %}">
     <link rel="stylesheet" href="{% static 'css/global.css' %}">
     <script src="{% static 'js/menu.js' %}" defer></script>
     <script src="{% static 'js/darkmode.js' %}"></script>
@@ -60,7 +60,7 @@
 
     <div class="medicos-lista">
         {% for medico in medicos %}
-            <div class="medico-card">
+            <div class="medico-card" onclick="editarHorarios({{ medico.id }})">
                 <div class="info">
                     <p><strong>{{ medico.user.nombre }} {{ medico.user.apellido }}</strong></p>
                     <p>Especialidades:
@@ -70,7 +70,7 @@
                     </p>
                     <p> Ciudad: {{ medico.user.get_ciudad_display }}</p>
                 </div>
-                <button onclick="editarHorarios({{ medico.id }})">Editar horarios</button>
+                
             </div>
         {% empty %}
             <p>No hay médicos cargados en esta clínica.</p>
