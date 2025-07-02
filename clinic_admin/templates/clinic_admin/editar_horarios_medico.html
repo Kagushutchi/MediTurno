@@ -1,0 +1,42 @@
+<h3>Editar horarios para {{ medico.user.nombre }} {{ medico.user.apellido }}</h3>
+
+<form id="horarios-form" method="post">
+    {% csrf_token %}
+    <div id="horarios-lista">
+        {% for horario in horarios %}
+            <div class="horario-item">
+                <select name="dia[]">
+                    {% for codigo, nombre in dias %}
+                        <option value="{{ codigo }}" {% if horario.dia == codigo %}selected{% endif %}>{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+                <input type="time" name="hora_inicio[]" value="{{ horario.hora_inicio|time:'H:i' }}">
+                <input type="time" name="hora_fin[]" value="{{ horario.hora_fin|time:'H:i' }}">
+                <button type="button" onclick="this.parentElement.remove()">❌</button>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" onclick="agregarHorario()">Agregar horario</button>
+    <button type="submit">Guardar cambios</button>
+</form>
+
+
+<script>
+function agregarHorario() {
+    const horariosContainer = document.getElementById('horarios-lista');
+    const nuevo = document.createElement('div');
+    nuevo.classList.add('horario-item');
+    nuevo.innerHTML = `
+        <select name="dia[]">
+            {% for codigo, nombre in dias %}
+                <option value="{{ codigo }}">{{ nombre }}</option>
+            {% endfor %}
+        </select>
+        <input type="time" name="hora_inicio[]" required>
+        <input type="time" name="hora_fin[]" required>
+        <button type="button" onclick="this.parentElement.remove()">❌</button>
+    `;
+    horariosContainer.appendChild(nuevo);
+}
+</script>
+

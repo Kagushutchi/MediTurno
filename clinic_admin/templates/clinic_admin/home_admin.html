@@ -16,7 +16,7 @@
 <body>
     {% include "includes/header_admin.html" %}
     <main class="home-buttons">
-        <button>Gestion de Medicos</button>
+        <button onclick="location.href='{% url 'clinic_admin:gestionar_medicos' %}'">Gestion de Medicos</button>
         <button onclick="location.href='{% url 'clinic_admin:agenda_medicos' %}'">Agenda de profesionales</button>
         <button onclick="location.href='{% url 'clinic_admin:ficha_pacientes' %}'">Ficha de pacientes</button>
     </main>

@@ -1,0 +1,97 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Médicos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'appointments/css/buscador.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <script src="{% static 'js/menu.js' %}" defer></script>
+    <script src="{% static 'js/darkmode.js' %}"></script>
+</head>
+<script>
+    function mostrarHorarios(medicoId) {
+        fetch(`/appointments/medico/${medicoId}/horarios/`)
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('.medicos-lista').style.display = 'none';
+                const horariosContainer = document.querySelector('#horarios');
+                horariosContainer.innerHTML = data.html;
+                horariosContainer.style.display = 'block';
+
+                // 💥 Reenganchar el script que estaba dentro del HTML cargado
+                const disponibilidadScript = document.getElementById('disponibilidad-json');
+                if (!disponibilidadScript) return;
+
+                const disponibilidad = JSON.parse(disponibilidadScript.textContent);
+                const fechaSelect = document.querySelector('select[name="fecha"]');
+                const horaSelect = document.getElementById('horario-select');
+
+                if (fechaSelect && horaSelect) {
+                    fechaSelect.addEventListener('change', () => {
+                        const fecha = fechaSelect.value;
+                        horaSelect.innerHTML = '<option value="">Horario</option>';
+                        if (disponibilidad[fecha]) {
+                            disponibilidad[fecha].forEach(hora => {
+                                const option = document.createElement('option');
+                                option.value = hora;
+                                option.textContent = hora.slice(0, 5);
+                                horaSelect.appendChild(option);
+                            });
+                        }
+                    });
+                }
+            });
+    }
+</script>
+
+
+<body>
+    {% include "includes/header_admin.html" %}
+    <form method="get">
+        <input type="text" name="q" placeholder="Buscar por nombre..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit">Buscar</button>
+    </form>
+
+    
+    <h1>Gestión de Médicos</h1>
+
+    <div class="medicos-lista">
+        {% for medico in medicos %}
+            <div class="medico-card">
+                <div class="info">
+                    <p><strong>{{ medico.user.nombre }} {{ medico.user.apellido }}</strong></p>
+                    <p>Especialidades:
+                    {% for especialidad in medico.especialidades.all %}
+                        {{ especialidad }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    </p>
+                    <p> Ciudad: {{ medico.user.get_ciudad_display }}</p>
+                </div>
+                <button onclick="editarHorarios({{ medico.id }})">Editar horarios</button>
+            </div>
+        {% empty %}
+            <p>No hay médicos cargados en esta clínica.</p>
+        {% endfor %}
+    </div>
+
+<div id="horarios" style="display: none;"></div>
+
+<script>
+function editarHorarios(medicoId) {
+    fetch(`/clinic_admin/medico/${medicoId}/editar_horarios/`)
+        .then(response => response.json())
+        .then(data => {
+            document.querySelector('.medicos-lista').style.display = 'none';
+            const horariosContainer = document.querySelector('#horarios');
+            horariosContainer.innerHTML = data.html;
+            horariosContainer.style.display = 'block';
+        });
+}
+</script>
+
+</body>
+</html>
+

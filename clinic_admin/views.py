@@ -8,7 +8,73 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
 from users.forms import LoginForm, CustomUserCreationForm, CustomUserUpdateForm
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
+from users.models import MedicoProfile, HorarioMedico
+from django.template.loader import render_to_string
+from users.models import DiaDeAtencion
 
+@login_required
+def editar_horarios_medico(request, medico_id):
+    medico = get_object_or_404(MedicoProfile, id=medico_id)
+
+    # corregido
+    if request.user != medico.clinica:
+        return HttpResponseBadRequest("No autorizado")
+
+    horarios = HorarioMedico.objects.filter(medico=medico).order_by('dia')
+
+    dias = DiaDeAtencion.DIA_CHOICES
+
+    html = render_to_string("clinic_admin/editar_horarios_medico.html", {
+        "medico": medico,
+        "horarios": horarios,
+        "dias": dias
+    }, request=request)
+
+    return JsonResponse({'html': html})
+
+
+@login_required
+def guardar_horarios_medico(request, medico_id):
+    medico = get_object_or_404(MedicoProfile, id=medico_id)
+    if request.user != medico.clinica:
+        return HttpResponseBadRequest("No autorizado")
+
+    if request.method == "POST":
+        dias = request.POST.getlist("dia[]")
+        horas_inicio = request.POST.getlist("hora_inicio[]")
+        horas_fin = request.POST.getlist("hora_fin[]")
+
+        # Borramos todos los horarios actuales
+        HorarioMedico.objects.filter(medico=medico).delete()
+
+        # Creamos los nuevos
+        for d, hi, hf in zip(dias, horas_inicio, horas_fin):
+            if hi and hf:
+                HorarioMedico.objects.create(
+                    medico=medico,
+                    dia=d,
+                    hora_inicio=hi,
+                    hora_fin=hf
+                )
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False, "error": "Método no permitido"})
+
+
+@login_required
+def gestionar_medicos(request):
+    if not request.user.is_clinic():
+        return HttpResponseBadRequest("No autorizado")
+
+    medicos = MedicoProfile.objects.filter(clinica=request.user)
+
+    return render(request, "clinic_admin/gestionar_medico.html", {
+        "medicos": medicos
+    })
 
 @login_required
 def edit_profile_admin(request):
