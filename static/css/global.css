@@ -17,7 +17,7 @@ body.dark-mode {
   --menu-gradient: linear-gradient(to right, #333333, #1f1f1f);
   --mobile-menu-gradient: linear-gradient(to left, #1f1f1f, #333333);
   --button-color: #e0e0e0;
-  --shadow-color: rgba(255, 255, 255, 0.1);
+  --shadow-color: rgb(255, 255, 255, 0.2);
 }
 
 body {
@@ -155,4 +155,14 @@ h1,
 h2,
 h3 {
   color: var(--text-color);
+}
+
+.soporte-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--background-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px var(--shadow-color);
+  text-align: center;
 }

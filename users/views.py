@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import CustomUser
 from appointments.models import Appointment
-from datetime import timedelta
+from datetime import timedelta, datetime, time
+from users.models import HorarioMedico, DiaDeAtencion
+import calendar
 
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -73,6 +75,37 @@ def edit_profile(request):
         form = CustomUserUpdateForm(instance=user)
     return render(request, 'users/edit_profile.html', {'form': form})
 
+
+def get_next_available_date(medic, suggested_date):
+    # Get all working days for the medic
+    horarios = HorarioMedico.objects.filter(medico=medic.medico_profile)
+    dias_laborales = set(h.dia for h in horarios)
+    # Map day codes to weekday numbers (LU=0, MA=1, ...)
+    dia_map = {k: i for i, (k, _) in enumerate(DiaDeAtencion.DIA_CHOICES)}
+    dias_laborales_weekdays = set(dia_map[d] for d in dias_laborales if d in dia_map)
+    # Start searching from suggested_date (or today if None)
+    current_date = suggested_date.date() if suggested_date else datetime.now().date()
+    for _ in range(60):  # Search up to 60 days ahead
+        weekday = current_date.weekday()
+        if weekday in dias_laborales_weekdays:
+            # For each working hour on this day
+            for horario in horarios.filter(dia=[k for k, v in dia_map.items() if v == weekday][0]):
+                start_time = horario.hora_inicio
+                end_time = horario.hora_fin
+                # Check each slot (assuming 1 hour slots, adjust as needed)
+                slot_time = datetime.combine(current_date, start_time)
+                while slot_time.time() < end_time:
+                    # Check if slot is free
+                    exists = Appointment.objects.filter(
+                        medico=medic,
+                        fecha_inicio=slot_time,
+                    ).exists()
+                    if not exists:
+                        return slot_time
+                    slot_time += timedelta(hours=1)
+        current_date += timedelta(days=1)
+    return None
+
 @login_required(login_url='/users/login/')
 def suggest_turno_view(request):
     user = request.user
@@ -92,7 +125,9 @@ def suggest_turno_view(request):
                 for i in range(len(turns)-1)
             ]
             avg_interval = sum(intervals) // len(intervals)
-            suggested_date = turns[0].fecha_inicio + timedelta(days=avg_interval)
+            initial_suggested = turns[0].fecha_inicio + timedelta(days=avg_interval)
+            # Find next available slot for this medic on/after initial_suggested
+            suggested_date = get_next_available_date(medic, initial_suggested)
 
         suggestions.append({
             'medic': medic,
