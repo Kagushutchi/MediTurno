@@ -17,7 +17,7 @@ body.dark-mode {
   --menu-gradient: linear-gradient(to right, #333333, #1f1f1f);
   --mobile-menu-gradient: linear-gradient(to left, #1f1f1f, #333333);
   --button-color: #e0e0e0;
-  --shadow-color: rgb(255, 255, 255, 0.2);
+  --shadow-color: rgb(255, 255, 255, 0.6);
 }
 
 body {

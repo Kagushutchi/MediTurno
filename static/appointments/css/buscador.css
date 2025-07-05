@@ -45,6 +45,11 @@ form button:hover {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+    text-shadow:
+        var(--text-shadow-color) 1px 1px 0,
+        var(--text-shadow-color) -1px 1px 0,
+        var(--text-shadow-color) 1px -1px 0,
+        var(--text-shadow-color) -1px -1px 0;
 }
 
 /* Tarjeta de paciente */
@@ -98,7 +103,7 @@ form button:hover {
     background-color: #fff; /* Fondo blanco para la tarjeta */
     padding: 1rem;
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px var(--shadow-color);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -110,6 +115,11 @@ form button:hover {
     padding: 1rem;
     border-radius: 12px;
     color: #fff;
+    text-shadow:
+        var(--text-shadow-color) 1px 1px 0,
+        var(--text-shadow-color) -1px 1px 0,
+        var(--text-shadow-color) 1px -1px 0,
+        var(--text-shadow-color) -1px -1px 0;
 }
 
 .medico-card .info p {

@@ -1,7 +1,8 @@
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
-    font-weight: 300; /* Light */
+    font-weight: 300;
+    /* Light */
 }
 
 .notificaciones-container {
@@ -34,6 +35,11 @@ body {
     margin-bottom: 15px;
     width: 80%;
     max-width: 400px;
+    text-shadow:
+        var(--text-shadow-color) 1px 1px 0,
+        var(--text-shadow-color) -1px 1px 0,
+        var(--text-shadow-color) 1px -1px 0,
+        var(--text-shadow-color) -1px -1px 0;
 }
 
 .sin-turnos {

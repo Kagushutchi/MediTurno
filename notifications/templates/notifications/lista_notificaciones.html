@@ -32,7 +32,7 @@
             {% if turno.clinica and turno.clinica.direccion %}
             <a href="{% url 'users:map' turno.clinica.id %}">Ver en mapa</a>
             {% else %}
-            <span>Sin dirección de mapa</span>
+            <p>Sin dirección de mapa</p>
             {% endif %}
             {% if turno.motivo %}
             <p><strong>Motivo:</strong> {{ turno.motivo }}</p>
