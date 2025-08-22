@@ -57,7 +57,7 @@ python3 manage.py createsuperuser
 python3 manage.py runserver
 ```
 
-## 👨💻 Autores
+## 👨‍💻 Autores
 - Flac222
 - Kagushutchi
 - Audine-Matias-Gabriel
